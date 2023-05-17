@@ -25,4 +25,20 @@ export class PostResolver {
     await Post.delete(id);
     return true;
   }
+
+  @Mutation(() => Post, { nullable: true })
+  async updatePost(
+    @Arg("id") id: number,
+    @Arg("title", () => String, { nullable: true }) title: string
+    //We need to add "() => String, { nullable: true }" to reflect the update
+  ): Promise<Post | null> {
+    const post = await Post.findOne(id);
+    if (!post) {
+      return null;
+    }
+    if (typeof title !== undefined) {
+      await Post.update({ id }, { title });
+    }
+    return post;
+  }
 }
