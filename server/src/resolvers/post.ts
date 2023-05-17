@@ -14,4 +14,9 @@ export class PostResolver {
   async posts(): Promise<Post[]> {
     return Post.find();
   }
+
+  @Query(() => Post, { nullable: true })
+  async post(@Arg("id") id: number): Promise<Post | undefined> {
+    return Post.findOne(id);
+  }
 }
