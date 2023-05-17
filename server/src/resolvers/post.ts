@@ -19,4 +19,10 @@ export class PostResolver {
   async post(@Arg("id") id: number): Promise<Post | undefined> {
     return Post.findOne(id);
   }
+
+  @Mutation(() => Boolean)
+  async deletePost(@Arg("id") id: number): Promise<boolean> {
+    await Post.delete(id);
+    return true;
+  }
 }
