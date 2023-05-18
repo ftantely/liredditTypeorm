@@ -6,6 +6,7 @@ import { buildSchema } from "type-graphql";
 import { createConnection } from "typeorm";
 import { Post } from "./entities/Post";
 import { PostResolver } from "./resolvers/post";
+import { User } from "./entities/User";
 
 const main = async () => {
   //connect to database
@@ -16,7 +17,7 @@ const main = async () => {
     password: "postgres",
     logging: true,
     synchronize: true,
-    entities: [Post],
+    entities: [Post, User],
   });
   console.log(conn);
   //create graphql schema
