@@ -7,6 +7,7 @@ import { createConnection } from "typeorm";
 import { Post } from "./entities/Post";
 import { PostResolver } from "./resolvers/post";
 import { User } from "./entities/User";
+import { UserResolver } from "./resolvers/user";
 
 const main = async () => {
   //connect to database
@@ -22,7 +23,7 @@ const main = async () => {
   console.log(conn);
   //create graphql schema
   const schema = await buildSchema({
-    resolvers: [HelloResolver, PostResolver],
+    resolvers: [HelloResolver, PostResolver, UserResolver],
   });
   //Create apollo server instance
   const apolloServer = new ApolloServer({ schema });
