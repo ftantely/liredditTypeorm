@@ -24,6 +24,8 @@ const main = async () => {
   //create graphql schema
   const schema = await buildSchema({
     resolvers: [HelloResolver, PostResolver, UserResolver],
+    //"validate has to be set to "false" to avoid unsurmountable error message about Arguments
+    validate: false,
   });
   //Create apollo server instance
   const apolloServer = new ApolloServer({ schema });
