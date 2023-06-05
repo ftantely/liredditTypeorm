@@ -36,6 +36,7 @@ class UserResponse {
 export class UserResolver {
   @Query(() => User, { nullable: true })
   me(@Ctx() { req }: MyContext) {
+    // console.log("session------", req.session);
     //You are not logged in
     if (!req.session.userId) {
       return null;
