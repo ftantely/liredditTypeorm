@@ -94,7 +94,7 @@ export class UserResolver {
         errors: [{ field: "password", message: "incorrect password" }],
       };
     }
-    req.session.userId = user.id;
+    req.session.userId = user.id; //We are storing the user id in session
     return { user };
   }
 }

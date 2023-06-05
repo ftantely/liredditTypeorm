@@ -28,11 +28,13 @@ const main = async () => {
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
-
+  /* session middleware comes before apollo middleware
+  because we will use session inside apollo */
   app.use(
     session({
       name: "qid",
       store: new RedisStore({
+        /* This is telling express-session we are using Ioredis */
         client: redis,
         disableTouch: true,
       }),
@@ -53,6 +55,7 @@ const main = async () => {
       validate: false,
     }),
     context: ({ req, res }) => ({ req, res, redis }),
+    // accessing session inside resolvers by passing request and response
   });
 
   await apolloServer.start();
