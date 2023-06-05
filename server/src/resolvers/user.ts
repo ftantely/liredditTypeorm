@@ -1,4 +1,12 @@
-import { Arg, Ctx, Field, Mutation, ObjectType, Resolver } from "type-graphql";
+import {
+  Arg,
+  Ctx,
+  Field,
+  Mutation,
+  ObjectType,
+  Query,
+  Resolver,
+} from "type-graphql";
 import { User } from "../entities/User";
 import argon2 from "argon2";
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
@@ -26,6 +34,14 @@ class UserResponse {
 
 @Resolver()
 export class UserResolver {
+  @Query(() => User, { nullable: true })
+  me(@Ctx() { req }: MyContext) {
+    //You are not logged in
+    if (!req.session.userId) {
+      return null;
+    }
+    return User.findOne(req.session.userId);
+  }
   @Mutation(() => UserResponse)
   async register(
     @Arg("options") options: UsernamePasswordInput,
@@ -65,7 +81,9 @@ export class UserResolver {
         };
       }
     }
-
+    req.session.userId =
+      user.id; /*(store use id session, this will set a cookie on the user,
+    keep them logged in) */
     return { user };
   }
 
