@@ -12,6 +12,7 @@ import Redis from "ioredis";
 import session from "express-session";
 import connectRedis from "connect-redis";
 import { __prod__ } from "./constants";
+import cors from "cors";
 
 const main = async () => {
   //connect to database
@@ -28,8 +29,14 @@ const main = async () => {
 
   const RedisStore = connectRedis(session);
   const redis = new Redis();
-  /* session middleware comes before apollo middleware
-  because we will use session inside apollo */
+
+  app.use(
+    cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    })
+  );
+
   app.use(
     session({
       name: "qid",
@@ -60,7 +67,10 @@ const main = async () => {
 
   await apolloServer.start();
 
-  apolloServer.applyMiddleware({ app });
+  apolloServer.applyMiddleware({
+    app,
+    cors: false,
+  });
   app.listen(4000, () => {
     console.log("server started on http://localhost:4000/graphql");
   });
