@@ -12,12 +12,16 @@ interface registerProps {}
 const Register: React.FC<registerProps> = ({}) => {
   const router = useRouter();
   const [, register] = useRegisterMutation();
+  console.log("+++++++++++++++", useRegisterMutation());
+  // console.log("+++++++++++++++", register);
+
   return (
     <Wrapper variant="small">
       <Formik
         initialValues={{ username: "", email: "", password: "" }}
         onSubmit={async (values, { setErrors }) => {
           const response = await register(values);
+          // console.log("+++++++++++++++", response);
           if (response.data?.register.errors) {
             setErrors(toErrorMaps(response.data.register.errors));
           } else if (response.data?.register.user) {
